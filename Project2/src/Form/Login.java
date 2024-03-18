@@ -25,9 +25,6 @@ public class Login {
 	public static JTextField id_textField;
 	public static JTextField pw_textField;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -97,7 +94,7 @@ public class Login {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.dispose();
-				PreferPopSong ppp = new PreferPopSong();
+				PreferPopSong ppp = new PreferPopSong("Login");
 				ppp.getFrame().setVisible(true);
 			}
 		});

@@ -33,7 +33,7 @@ public class Register {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Register window = new Register();
+					Register window = new Register("", "");
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -42,7 +42,11 @@ public class Register {
 		});
 	}
 
-	public Register() {
+	String birth;
+	String pw;
+	public Register(String birth, String pw) {
+		this.birth = birth;
+		this.pw = pw;
 		initialize();
 	}
 
@@ -55,6 +59,7 @@ public class Register {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setLocationRelativeTo(null);
 		
 		JLabel lblNewLabel = new JLabel("회원가입");
 		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 20));
@@ -88,7 +93,7 @@ public class Register {
 		frame.getContentPane().add(nameField);
 		nameField.setColumns(10);
 		
-		birthField = new JTextField();
+		birthField = new JTextField(birth);
 		birthField.setEnabled(false);
 		birthField.setColumns(10);
 		birthField.setBounds(118, 112, 224, 21);
@@ -99,7 +104,7 @@ public class Register {
 		idField.setBounds(118, 142, 224, 21);
 		frame.getContentPane().add(idField);
 		
-		pwField = new JTextField();
+		pwField = new JTextField(pw);
 		pwField.setEnabled(false);
 		pwField.setColumns(10);
 		pwField.setBounds(118, 167, 224, 21);
@@ -110,7 +115,7 @@ public class Register {
 			public void actionPerformed(ActionEvent e) {
 				if (nameField.getText().isEmpty() || nameField.getText().isEmpty() || birthField.getText().isEmpty() || pwField.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "빈칸이 있습니다.", "경고", JOptionPane.ERROR_MESSAGE);
-				} else if (!Pattern.matches("[ㄱ-ㅎ|가-힣]", nameField.getText())) {
+				} else if (!Pattern.matches("[ㄱ-ㅎ가-힣]*", nameField.getText())) {
 					JOptionPane.showMessageDialog(null, "이름은 한글만 가능합니다.", "경고", JOptionPane.ERROR_MESSAGE);
 				} else {
 					List<String> list = DB.getAllStringData("id", "user");
@@ -149,7 +154,7 @@ public class Register {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.dispose();
-				PreferPopSong ppp = new PreferPopSong();
+				PreferPopSong ppp = new PreferPopSong("Register");
 				ppp.getFrame().setVisible(true);
 			}
 		});

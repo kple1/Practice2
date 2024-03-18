@@ -4,26 +4,29 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import Utils.MainPlugin;
 import Utils.dayCircle;
-import Utils.redCircle;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.border.LineBorder;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import java.awt.Toolkit;
 
 public class SelectDay {
 
@@ -45,17 +48,30 @@ public class SelectDay {
 	public SelectDay() {
 		initialize();
 	}
+	
+	
+	String getName;
+	String getId;
+	String getPw;
+	public SelectDay(String getName, String getId, String getPw) {
+		this.getName = getName;
+		this.getId = getId;
+		this.getPw = getPw;
+		initialize();
+	}
 
 	public JFrame getFrame() {
 		return frame;
 	}
-	
+
 	int setMonth = LocalDateTime.now().getMonthValue();
 	int getYear = LocalDateTime.now().getYear();
 	JLabel monthLabel = new JLabel();
 
 	private void initialize() {
 		frame = new JFrame();
+		frame.setTitle("날짜 선택");
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\User\\Desktop\\제2과제\\datafiles\\마이크.png"));
 		frame.setBounds(100, 100, 578, 558);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -81,7 +97,7 @@ public class SelectDay {
 		lblNewLabel_1.setBounds(428, 10, 122, 44);
 		frame.getContentPane().add(lblNewLabel_1);
 
-		JComboBox yearComboBox = new JComboBox();
+		JComboBox<String> yearComboBox = new JComboBox<String>();
 		for (int i = 1950; i <= getYear; i++) {
 			yearComboBox.addItem(String.valueOf(i));
 		}
@@ -109,6 +125,7 @@ public class SelectDay {
 					setMonth -= 1;
 					monthLabel.setText(setMonth + "월");
 				}
+				createCalender();
 			}
 		});
 		beforePage.setBounds(414, 64, 61, 23);
@@ -117,17 +134,18 @@ public class SelectDay {
 		JButton nextPage = new JButton(">");
 		nextPage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-					if (setMonth == 12) {
-						if (getYear != LocalDateTime.now().getYear()) {
-							getYear += 1;
-							yearComboBox.setSelectedItem(String.valueOf(getYear));
-						}
-					} else {
-						setMonth += 1;
-						monthLabel.setText(setMonth + "월");
+
+				if (setMonth == 12) {
+					if (getYear != LocalDateTime.now().getYear()) {
+						getYear += 1;
+						setMonth = 1;
+						yearComboBox.setSelectedItem(String.valueOf(getYear));
 					}
-				
+				} else {
+					setMonth += 1;
+					monthLabel.setText(setMonth + "월");
+				}
+				createCalender();
 			}
 		});
 		nextPage.setBounds(478, 64, 61, 23);
@@ -170,13 +188,35 @@ public class SelectDay {
 		lblNewLabel_3_6.setBounds(468, 115, 66, 15);
 		frame.getContentPane().add(lblNewLabel_3_6);
 		
-		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setBounds(22, 140, 528, 369);
-		frame.getContentPane().add(layeredPane);
-		layeredPane.setLayout(new GridLayout(6, 7, 0, 0));
+		createCalender();
+	}
+	
+	public void createCalender() {
+		JPanel panel = new JPanel();
+		panel.removeAll();
+		panel.revalidate();
+		panel.repaint();
 		
-		layeredPane.add(new dayCircle());
-		layeredPane.add(new redCircle());
+		panel.setBounds(22, 140, 528, 369);
+		frame.getContentPane().add(panel);
+		panel.setLayout(new GridLayout(0, 7, 0, 0));
+
+		int endedMonth = YearMonth.of(getYear, setMonth).lengthOfMonth();
+
+		LocalDate getFirstWeek = LocalDate.of(getYear, setMonth, 1);
+		int getFirst = getFirstWeek.getDayOfWeek().getValue();
+
+		for (int i = 0; i < getFirst; i++) {
+			if (getFirst == 7) break; 
+			panel.add(new JLabel());
+		}
+
+		for (int i = 1; i <= endedMonth; i++) {
+			panel.add(new dayCircle(i, getYear, setMonth, frame, "UserInformation", getName, getId, getPw));
+		}
 		
+		for (int i = 0; i < 42 - (getFirst + endedMonth); i++) {
+			panel.add(new JLabel());
+		}
 	}
 }

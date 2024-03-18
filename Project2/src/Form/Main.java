@@ -40,9 +40,6 @@ public class Main {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public Main() {
 		initialize();
 	}
@@ -79,7 +76,7 @@ public class Main {
 		registerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
-				Register rg = new Register();
+				Register rg = new Register("", "");
 				rg.getFrame().setVisible(true);
 			}
 		});
@@ -102,7 +99,7 @@ public class Main {
 		myPageButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
-				MyPage myPage = new MyPage();
+				MyPage myPage = new MyPage(DB.getStringData("u_name", "user", "id", Login.id_textField.getText()));
 				myPage.getFrame().setVisible(true);
 			}
 		});
@@ -112,7 +109,9 @@ public class Main {
 		JButton grape = new JButton("분석");
 		grape.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO
+				frame.dispose();
+				Summary s = new Summary();
+				s.getFrame().setVisible(true);
 			}
 		});
 		grape.setBounds(504, 57, 111, 45);
@@ -144,9 +143,9 @@ public class Main {
 			int day = LocalDateTime.now().getDayOfMonth();
 			
 			if (year < 19 && month < Integer.parseInt(getUserMonth) && day < Integer.parseInt(getUserDay)) {
-				panel.add(new MainPlugin(getName, DB.getImage().get(i), getAgeLimit));
+				panel.add(new MainPlugin(getName, DB.getImage().get(i), getAgeLimit, frame));
 			} else {
-				panel.add(new MainPlugin(getName, DB.getImage().get(i), 0));
+				panel.add(new MainPlugin(getName, DB.getImage().get(i), 0, frame));
 			}
 		}
 	}
