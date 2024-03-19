@@ -10,19 +10,23 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolTip;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import Data.DB;
+import Form.Login;
 import Form.MusicInformation;
 
 public class MainPlugin extends JPanel {
 	
 	JLabel ageLimit = new JLabel();
 	String m_name;
-	public MainPlugin(String m_name1, byte[] imageName, int ageLi, JFrame frame) {
+	JLabel downloadLogo = new JLabel("");
+	public MainPlugin(String m_name1, byte[] imageName, int ageLi, JFrame frame, String m_no) {
 		JLayeredPane layeredPane = new JLayeredPane();
+		
 		m_name = m_name1;
 		if (m_name.length() > 9) {
 			m_name = m_name.substring(0, 9) + "...";
@@ -65,21 +69,41 @@ public class MainPlugin extends JPanel {
 		layeredPane.add(topPrice);
 		setLayout(groupLayout);
 		
+		downloadLogo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String u_no = DB.getStringData("u_no", "user", "id", Login.id_textField.getText());
+				DB.insertPlayList(u_no, m_no);
+				JOptionPane.showMessageDialog(null, "음원이 저장되었습니다.");
+			}
+		});
+		ImageIcon icon = new ImageIcon("C:\\Users\\User\\Desktop\\제2과제\\datafiles\\담기.png");
+		downloadLogo.setIcon(MainPlugin.setSizeImage(icon, 40, 35));
+		downloadLogo.setBounds(60, 58, 40, 35);
+		downloadLogo.setVisible(false);
+		layeredPane.add(downloadLogo);
+		
 		ImageIcon image = new ImageIcon(imageName);
 		JLabel label = new JLabel(setSizeImage(image, 100, 93));
+		label.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				downloadLogo.setVisible(true);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				downloadLogo.setVisible(false);
+			}
+		});
+		
+		String getArtist = DB.getStringData("singer", "music", "m_no", m_no);
+		label.setToolTipText("<html>아티스트: " + getArtist + "<br>제목: " + m_name1 + "<html/>");
 		label.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.dispose();
 				MusicInformation mi = new MusicInformation(m_name1, imageName);
 				mi.getFrame().setVisible(true);
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				String getArtist = DB.getStringData("singer", "music", "m_name", m_name1);
-				JToolTip tooltip = new JToolTip();
-				tooltip.setToolTipText("<html>아트스트: " + getArtist + "<br>제목:" + m_name1 + "html/");
 			}
 		});
 		label.setBounds(0, 0, 100, 93);

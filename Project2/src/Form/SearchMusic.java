@@ -138,14 +138,14 @@ public class SearchMusic {
 		// comboBox 정렬
 		for (int i = 0; i < array.size(); i++) {
 			if (searchField.getText().isEmpty()) {
-				panel.add(new MainPlugin(getName.get(i), DB.getImage().get(i), getAgeLimit.get(i), frame));
+				panel.add(new MainPlugin(getName.get(i), DB.getImage().get(i), getAgeLimit.get(i), frame, array.get(i)));
 			} else if (searchComboBox.getSelectedItem().equals("제목")) {
 				if (soltComboBox.getSelectedItem().equals("내림차순")) {
 					Collections.sort(getName, Collections.reverseOrder());
 					Collections.sort(getArtist, Collections.reverseOrder());
 					Collections.sort(getAgeLimit, Collections.reverseOrder());
 					if (getName.get(i).contains(searchField.getText())) {
-						panel.add(new MainPlugin(getName.get(i), DB.getReverseImage().get(i), getAgeLimit.get(i), frame));
+						panel.add(new MainPlugin(getName.get(i), DB.getReverseImage().get(i), getAgeLimit.get(i), frame, array.get(i)));
 					} else {
 						continue;
 					}
@@ -154,7 +154,7 @@ public class SearchMusic {
 					Collections.sort(getArtist);
 					Collections.sort(getAgeLimit);
 					if (getName.get(i).contains(searchField.getText())) {
-						panel.add(new MainPlugin(getName.get(i), getImage.get(i), getAgeLimit.get(i), frame));
+						panel.add(new MainPlugin(getName.get(i), getImage.get(i), getAgeLimit.get(i), frame, array.get(i)));
 					} else {
 						continue;
 					}
@@ -165,7 +165,7 @@ public class SearchMusic {
 					Collections.sort(getArtist, Collections.reverseOrder());
 					Collections.sort(getAgeLimit, Collections.reverseOrder());
 					if (getArtist.get(i).contains(searchField.getText())) {
-						panel.add(new MainPlugin(getName.get(i), DB.getReverseImage().get(i), getAgeLimit.get(i), frame));
+						panel.add(new MainPlugin(getName.get(i), DB.getReverseImage().get(i), getAgeLimit.get(i), frame, array.get(i)));
 					} else {
 						continue;
 					}
@@ -174,7 +174,7 @@ public class SearchMusic {
 					Collections.sort(getArtist);
 					Collections.sort(getAgeLimit);
 					if (getArtist.get(i).contains(searchField.getText())) {
-						panel.add(new MainPlugin(getName.get(i), getImage.get(i), getAgeLimit.get(i), frame));
+						panel.add(new MainPlugin(getName.get(i), getImage.get(i), getAgeLimit.get(i), frame, array.get(i)));
 					} else {
 						continue;
 					}

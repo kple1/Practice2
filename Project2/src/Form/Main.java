@@ -143,9 +143,9 @@ public class Main {
 			int day = LocalDateTime.now().getDayOfMonth();
 			
 			if (year < 19 && month < Integer.parseInt(getUserMonth) && day < Integer.parseInt(getUserDay)) {
-				panel.add(new MainPlugin(getName, DB.getImage().get(i), getAgeLimit, frame));
+				panel.add(new MainPlugin(getName, DB.getImage().get(i), getAgeLimit, frame, ""));
 			} else {
-				panel.add(new MainPlugin(getName, DB.getImage().get(i), 0, frame));
+				panel.add(new MainPlugin(getName, DB.getImage().get(i), 0, frame, ""));
 			}
 		}
 	}
